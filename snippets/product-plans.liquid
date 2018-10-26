@@ -1,0 +1,80 @@
+{% include 'subscription-product' %}
+
+{% assign discount_percentage = subscription_product.discount_percentage | round: 2 %}
+{% assign discount_floor = subscription_product.discount_percentage | floor %}
+{% if discount_percentage == discount_floor %}
+  {% assign discount_percentage = discount_floor %}
+{% endif %}
+
+{% if product.variants.size > 0 %}
+
+  {% for product_option in product.options_with_values %}
+    {% assign option_downCased = product_option.name | downcase %}  
+    {% if option_downCased == "supply" %}
+    	{% assign product_contains_subscriptions = true %}
+    {% endif %}
+  {% endfor %}
+
+  {% if product_contains_subscriptions %}
+    <div class="product__plan-title">
+      <p>{{ 'products.product.select_plan' | t }}</p>
+    </div><!-- /.product__plan-title -->
+  {% endif %}
+
+  <div class="accordions accordions--product-plans">
+    {% for variant in product.variants %}
+      {% assign variant_handled = variant.title | handle %}
+      {% assign variant_title = variant.title | handle | plus: 0 %}
+      {% assign months_supply = variant_title | divided_by: 30 | ceil %}
+
+      {% if variant_handled != 'default-title' %}
+        <div class="accordion {% if forloop.first %} active {% endif %}">
+          <div class="accordion__head">
+            <a href="#{{ forloop.index }}">
+              <div class="product__title">
+                <h3>{{ months_supply }} {% if months_supply == 1 %} {{ 'products.product.month' | t }} {% else %} {{ 'products.product.months' | t }} {% endif %} {{ 'products.product.supply' | t }} <span>{{ variant.price | money }}</span></h3>
+              </div><!-- /.product__title -->
+
+              <div class="product__prices">
+                {{ variant.price | money }}
+              </div><!-- /.product__price -->
+            </a>
+          </div><!-- /.accordion__head -->
+
+          <div class="accordion__body {% if forloop.first %} active {% endif %}" id="{{ forloop.index }}" {% if forloop.first %} style="display: block;" {% endif %}>
+            <div class="plan-radios">
+              <label for="{{ forloop.index }}_radio-1" class="radio">
+                <input type="radio" name="purchase_type" value="autodeliver" id="{{ forloop.index }}_radio-1" data-frequency="{{ months_supply | times: 30 }}" data-variant="{{ variant.id }}">
+
+                {% if discount_percentage > 0 %}
+                  {% assign discount_price = variant.price | times: discount_percentage | divided_by: 100.0 %}
+                  {% assign variant_price = variant.price | minus: discount_price | money %}
+                {% else %}
+                  {% assign variant_price = variant.price | money %}
+                {% endif %}
+
+                <span for="{{ forloop.index }}_radio-1">
+                  <h5>{{ 'products.product.subscribe_save' | t }} – {{ variant_price }}</h5>
+
+                  {% if months_supply == 1 %}
+                    <p>{{ 'products.product.delivered_every' | t }} {{ 'products.product.month' | t }}, {{ 'products.product.cancel_anytime' | t }}</p>
+                  {% else %}
+                    <p>{{ 'products.product.delivered_every' | t }} {{ months_supply }} {{ 'products.product.months' | t }}, {{ 'products.product.cancel_anytime' | t }}</p>
+                  {% endif %}
+                </span>
+              </label><!-- /.radio -->
+
+              <label for="{{ forloop.index }}_radio-2" class="radio">
+                <input type="radio" name="purchase_type" value="onetime" id="{{ forloop.index }}_radio-2" data-variant="{{ variant.id }}" {% if forloop.first %} checked {% endif %}>
+
+                <span for="{{ forloop.index }}_radio-2">
+                  <h5>{{ 'products.product.one_time' | t }} – {{ variant.price | money }}</h5>
+                </span>
+              </label><!-- /.radio -->
+            </div><!-- /.plan-radios -->
+          </div><!-- /.accordion__body -->
+        </div><!-- /.accordion -->
+      {% endif %}
+    {% endfor %}
+  </div><!-- /.accordions -->
+{% endif %}

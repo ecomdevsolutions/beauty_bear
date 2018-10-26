@@ -1,0 +1,17 @@
+{% capture social_networks %}facebook_link|fab fa-facebook-square,twitter_link|fab fa-twitter,youtube_link|fab fa-youtube,instagram_link|fab fa-instagram{% endcapture %}
+
+{% assign split_social_networks = social_networks | split: ',' %}
+
+<ul class="list-socials">
+	{% for social in split_social_networks %}
+		{% assign social_parts = social | split: '|' %}
+
+		{% if settings[social_parts[0]] != blank %}
+			<li>
+				<a href="{{ settings[social_parts[0]] | escape }}" target="_blank">
+					<i class="{{ social_parts[1] }}"></i>
+				</a>
+			</li>
+		{% endif %}
+	{% endfor %}
+</ul>

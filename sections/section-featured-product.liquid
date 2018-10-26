@@ -1,0 +1,126 @@
+{% assign _section = section.settings %}
+
+<section class="section-featured-product" {% if _section.bg_image != blank %} style="background-image: url('{{ _section.bg_image | img_url: '2048x' }}');" {% endif %}>
+  <div class="shell">
+    <div class="section__inner">
+      <div class="section__content">
+        {% if _section.section_title != blank %}
+          <h2>
+            {{ _section.section_title | newline_to_br | replace: '<p>', '' | replace: '</p>', '' }}
+          </h2>
+        {% endif %}
+
+        {% if _section.content != blank %}
+          <p>
+            {{ _section.content | newline_to_br }}
+          </p>
+        {% endif %}
+
+        {% if _section.button_link != blank and _section.button_label != blank %}
+          <a href="{{ _section.button_link | escape }}" class="btn btn--pink hidden-xs">
+            {{ _section.button_label | escape }}
+          </a><!-- /.btn btn--pink -->
+        {% endif %}
+      </div><!-- /.section__content -->
+
+      {% if _section.desktop_image != blank and _section.mobile_image != blank %}
+        <div class="section__image">
+          <img src="{{ _section.desktop_image | img_url: '2048x' }}"
+          alt="{{ _section.desktop_image.alt }}"
+          class="desktop"
+          sizes="auto"
+          srcset="{{  _section.desktop_image | img_url: '2048x' }} 2048w,
+                  {{  _section.desktop_image | img_url: '1728x' }} 1728w,
+                  {{  _section.desktop_image | img_url: '1512x' }} 1512w,
+                  {{  _section.desktop_image | img_url: '1296x' }} 1296w,
+                  {{  _section.desktop_image | img_url: '1080x' }} 1080w,
+                  {{  _section.desktop_image | img_url: '900x' }} 900w,
+                  {{  _section.desktop_image | img_url: '720x' }} 720w,
+                  {{  _section.desktop_image | img_url: '540x' }} 540w,
+                  {{  _section.desktop_image | img_url: '360x' }} 360w,
+                  {{  _section.desktop_image | img_url: '180x' }} 180w"
+           />
+           <img src="{{ _section.mobile_image | img_url: '2048x' }}"
+           alt="{{ _section.mobile_image.alt }}"
+           class="mobile"
+           sizes="auto"
+           srcset="{{  _section.mobile_image | img_url: '2048x' }} 2048w,
+                   {{  _section.mobile_image | img_url: '1728x' }} 1728w,
+                   {{  _section.mobile_image | img_url: '1512x' }} 1512w,
+                   {{  _section.mobile_image | img_url: '1296x' }} 1296w,
+                   {{  _section.mobile_image | img_url: '1080x' }} 1080w,
+                   {{  _section.mobile_image | img_url: '900x' }} 900w,
+                   {{  _section.mobile_image | img_url: '720x' }} 720w,
+                   {{  _section.mobile_image | img_url: '540x' }} 540w,
+                   {{  _section.mobile_image | img_url: '360x' }} 360w,
+                   {{  _section.mobile_image | img_url: '180x' }} 180w"
+            />
+        </div><!-- /.section__image -->
+      {% endif %}
+
+      {% if _section.button_link != blank and _section.button_label != blank %}
+        <div class="section__actions visible-xs-block">
+          <a href="{{ _section.button_link | escape }}" class="btn btn--pink">
+            {{ _section.button_label | escape }}
+          </a><!-- /.btn btn--pink -->
+        </div><!-- /.section__actions visible-xs-block -->
+      {% endif %}
+    </div><!-- /.section__inner -->
+  </div><!-- /.shell -->
+</section><!-- /.section-featured-product -->
+
+{% schema %}
+{
+  "name": "Featured Product",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "section_title",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Product"
+    }
+  ]
+}
+{% endschema %}

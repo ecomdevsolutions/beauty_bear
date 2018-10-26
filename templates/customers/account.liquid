@@ -1,0 +1,55 @@
+<a href="/account/addresses" class="btn btn-addresses">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a>
+
+<h1 class="page-title">{{ 'customer.account.title' | t }}</h1>
+
+<h4>{{ 'customer.orders.title' | t }}</h4>
+
+{% if customer.metafields.subscriptions.customer_string %}
+<!--BeginRechargeCode-->
+<p><a href="/tools/recurring/customer/{{customer.metafields.subscriptions.customer_string}}/subscriptions/">Manage Subscriptions</a></p>
+<!--EndRechargeCode-->
+{% endif %}<br>
+
+{% paginate customer.orders by 20 %}
+	{% if customer.orders.size != 0 %}
+		<div class="table table-order">
+			<table>
+				<thead>
+					<tr>
+						<th class="order-order_number">{{ 'customer.orders.order_number' | t }}</th>
+
+						<th class="order-date">{{ 'customer.orders.date' | t }}</th>
+
+						<th class="order-payment_status">{{ 'customer.orders.payment_status' | t }}</th>
+
+						<th class="order-fulfillment_status">{{ 'customer.orders.fulfillment_status' | t }}</th>
+
+						<th class="order-total">{{ 'customer.orders.total' | t }}</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{% for order in customer.orders %}
+						<tr>
+							<td class="order-order_number" data-attr="{{ 'customer.orders.order_number' | t }}">{{ order.name | link_to: order.customer_url }}</td>
+
+							<td class="order-date" data-attr="{{ 'customer.orders.date' | t }}">{{ order.created_at | date: "%b %d, %Y" }}</td>
+
+							<td class="order-payment_status" data-attr="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
+
+							<td class="order-fulfillment_status" data-attr="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
+
+							<td class="order-total" data-attr="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div><!-- /.table -->
+	{% else %}
+		<div class="no-oders">
+			<p>{{ 'customer.orders.none' | t }}</p>
+		</div><!-- /.no-oders -->
+	{% endif %}
+
+	{% include 'pagination' %}
+{% endpaginate %}

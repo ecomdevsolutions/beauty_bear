@@ -1,0 +1,44 @@
+{% assign _section = section.settings %}
+
+<section class="section-instagram">
+  <div class="shell">
+    <div class="section__head">
+      {% if _section.title != blank %}
+        <h3>{{ _section.title | escape }}</h3>
+      {% endif %}
+
+      {% if _section.content != blank %}
+        <p>
+          {{ _section.content | escape | newline_to_br }}
+        </p>
+      {% endif %}
+    </div><!-- /.section__head -->
+
+    <div class="section__body">
+      <div id="insta-feed"></div>
+    </div><!-- /.section__body -->
+  </div><!-- /.shell -->
+</section><!-- /.section-instagram -->
+
+{% schema %}
+{
+  "name": "Instagram",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title"
+    },
+    {
+      "type": "textarea",
+      "id": "content",
+      "label": "Content"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram"
+    }
+  ]
+}
+{% endschema %}

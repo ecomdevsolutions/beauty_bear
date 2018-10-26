@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{% include 'settings' %}
+	{% include 'head' %}
+
+	{{ content_for_header }}
+
+  <meta name="google-site-verification" content="ei2R4vZgVARTDVFXidJySRKAhgK73ICnbI1dh54EaO4" />
+
+  <!-- Global site tag (gtag.js) - Google Ads: 783157105 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-783157105"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'AW-783157105');
+  </script>
+</head>
+
+{% assign body_class = template | split: '/' | last | split: '.' | last  %}
+
+{% if body_class contains 'blog' %}
+	{% assign body_class = body_class | append : ' ' |  append: 'blog' %}
+{% elsif body_class contains 'article' %}
+	{% assign body_class = body_class | append : ' ' |  append: 'blog single single-post' %}
+{% elsif body_class contains 'collection' %}
+	{% assign body_class = body_class | append : ' ' |  append: 'archive' %}
+{% elsif body_class contains 'product' %}
+	{% assign body_class = body_class | append : ' ' |  append: 'single single-product' %}
+{% elsif template contains 'customers' %}
+	{% assign body_class = body_class | append : ' ' |  append: 'customer-templates' %}
+{% endif %}
+
+<body class="template-{{ body_class }}">
+<div class="wrapper">
+	{% section 'header' %}
+
+	<div class="main">
+		{{ content_for_layout }}
+	</div><!-- /.main -->
+
+	{% section 'footer' %}
+</div><!-- /.wrapper -->
+
+{{ scripts }}
+
+{% include 'currencies' %}
+{% include 'subscription-theme-footer' %}
+
+  <script>
+    $(document).ready(function () {
+      $(window).on("resize", function (e) {
+        //checkScreenSize();
+      });
+
+      //checkScreenSize();
+
+      function checkScreenSize(){
+        var newWindowWidth = $(window).width();
+        if (newWindowWidth < 768 && $("#insta-feed").length) {
+          $('#insta-feed').slick({
+            infinite: true,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            dots: true,
+            arrows: false,
+            autoplay: true,
+            autoplaySpeed: 2500
+          });
+        }
+        else
+        {
+          //      $('div#insta-feed').slick('unslick');
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

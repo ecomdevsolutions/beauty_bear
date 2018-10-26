@@ -1,0 +1,54 @@
+<h1>{{ page.title }}</h1>
+
+{{ page.content }}
+
+{% form 'contact', class: 'form form-default form-contact' %}
+	{% assign attr_name = 'contact.form.name' | t | handle %}
+	{% assign attr_phone = 'contact.form.phone' | t | handle %}
+	{% capture field_name %}{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}{% endcapture %}
+	{% capture field_email %}{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}{% endcapture %}
+	{% capture field_phone %}{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.phone }}{% endif %}{% endcapture %}
+	{% capture field_message %}{% if form.body %}{{ form.body }}{% endif %}{% endcapture %}
+
+	{% if form.errors %}
+		<div class="form-alert error">
+			{{ form.errors | default_errors }}
+		</div><!-- /.form-notice -->
+	{% endif %}<a href="#"></a>
+
+	{% if form.posted_successfully? %}
+		<div class="form-alert success">
+			{{ 'contact.form.post_success' | t }}
+		</div><!-- /.form-alert -->
+	{% endif %}
+
+	<div class="form-body">
+		<div class="form-row">
+			<label for="field-contact-name" class="form-label">{{ 'contact.form.name' | t }}</label>
+
+			<input type="text" id="field-contact-name" class="field" name="contact[{{ attr_name }}]" placeholder="{{ 'contact.form.name' | t }}" autocapitalize="words" value="{{ field_name }}">
+		</div><!-- /.form-row -->
+		
+		<div class="form-row">
+			<label for="field-contact-email" class="form-label">{{ 'contact.form.email' | t }}</label>
+
+			<input type="email" id="field-contact-email" class="field" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{{ field_email }}">
+		</div><!-- /.form-row -->
+		
+		<div class="form-row">
+			<label for="field-contact-phone" class="form-label">{{ 'contact.form.phone' | t }}</label>
+
+			<input type="tel" id="field-contact-phone" class="field" name="contact[{{ attr_phone }}]" placeholder="{{ 'contact.form.phone' | t }}" pattern="[0-9\-]*" value="{{ field_phone }}">
+		</div><!-- /.form-row -->
+		
+		<div class="form-row">
+			<label for="field-contact-message" class="form-label">{{ 'contact.form.message' | t }}</label>
+
+			<textarea rows="10" id="field-contact-message" class="field" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}">{{ field_message }}</textarea>
+		</div><!-- /.form-row -->
+	</div><!-- /.form-body -->
+	
+	<div class="form-actions clear">
+		<input type="submit" class="form-btn" value="{{ 'contact.form.send' | t }}" >
+	</div><!-- /.form-actions -->
+{% endform %}
