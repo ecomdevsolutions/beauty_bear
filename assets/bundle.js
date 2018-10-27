@@ -13608,6 +13608,22 @@ $('.form-product .product__plan input[type="radio"]').on('change', function () {
   var frequency = $input.data('frequency');
   var variantId = $input.data('variant');
 
+	if (frequency) {
+		$('#shippingFrequency').prop('value', frequency).prop('name', 'properties[shipping_interval_frequency]');
+    $('#shippingType').prop('value', $('input[id*="shipping_interval_unit_type"]').val()).prop('name', 'properties[shipping_interval_unit_type]');
+		if (frequency == 1) {
+			console.log(frequency);
+    	$('#shippingPrice').prop('value', 16.99).prop('name', 'properties[recurring_price]');
+		} else if (frequency == 3) {
+			$('#shippingPrice').prop('value', 44.99).prop('name', 'properties[recurring_price]');
+		} else {
+			$('#shippingPrice').prop('value', 89.99).prop('name', 'properties[recurring_price]');
+		}
+	} else {
+		$('#shippingFrequency').prop('value', '').prop('name', '');
+    $('#shippingType').prop('value', '').prop('name', '');
+    $('#shippingPrice').prop('value', '').prop('name', '');
+	}
   $idField.val(variantId);
   $hiddenForm.find('input[name="properties[shipping_interval_frequency]"]').val(frequency);
 });

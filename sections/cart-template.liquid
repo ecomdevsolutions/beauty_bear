@@ -159,7 +159,9 @@
             <input type="submit" name="update" class="btn btn--secondary cart__update cart__update--large small--hide" value="{{ 'cart.general.update' | t }}">
             <input type="submit" name="checkout" class="btn btn--small-wide" value="{{ 'cart.general.checkout' | t }}">
             {% if additional_checkout_buttons %}
-              <div class="additional-checkout-buttons">{{ content_for_additional_checkout_buttons }}</div>
+              <span class="additional-checkout-buttons">
+                <div id="additional-checkout-buttons">{{ content_for_additional_checkout_buttons }}</div>
+              </span>
             {% endif %}
           </div>
         </div>
@@ -176,6 +178,7 @@
     </div>
   {% endif %}
 </div>
+{% include 'subscription-cart-footer' %}
 
 {% schema %}
   {

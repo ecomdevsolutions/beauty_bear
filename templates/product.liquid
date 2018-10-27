@@ -38,18 +38,8 @@
 				{% assign subscription_product = product.metafields.subscriptions %}
 				{% assign subscription_id = subscription_product.subscription_id %}
 
-				<form action="?" class="hidden-form hidden">
-					{% for variant in product.variants %}
-						{% assign variant_title = variant.title | handle | plus: 0 %}
-						{% assign months_supply = variant_title | divided_by: 30 | ceil %}
-					{% endfor %}
-
-					<input type="hidden" name="properties[shipping_interval_unit_type]" value="{{ shipping_interval_unit_type }}">
-					<input type="hidden" name="properties[shipping_interval_frequency]" value="{{ months_supply | times: 30 }}">
-					<input type="hidden" name="properties[subscription_id]" value="{{ subscription_id }}">
-				</form><!-- /.hidden-form hidden -->
-
 				<form action="/cart/add" class="form-product" data-productid="{{product.id}}">
+					{% if product.available %}{% include 'subscription-product' %}{% endif %}
 					<div class="product__logo">
 						<h2>{{ 'products.product.site_title_html' | t }}</h2>
 					</div><!-- /.product__logo -->
@@ -77,6 +67,10 @@
 
 					<input type="hidden" name="quantity" value="1">
 					<input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-productid="{{product.id}}">
+
+					<input type="hidden" id="shippingPrice" name="properties[recurring_price]" value="22.99" />
+          <input type="hidden" id="shippingFrequency" name="properties[shipping_interval_frequency]" value="1" />
+          <input type="hidden" id="shippingType" name="properties[shipping_interval_unit_type]" value="Months" />
 				</form>
 
 				<div class="product__description">

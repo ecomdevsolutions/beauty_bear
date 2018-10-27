@@ -9,7 +9,7 @@
 {% if product.variants.size > 0 %}
 
   {% for product_option in product.options_with_values %}
-    {% assign option_downCased = product_option.name | downcase %}  
+    {% assign option_downCased = product_option.name | downcase %}
     {% if option_downCased == "supply" %}
     	{% assign product_contains_subscriptions = true %}
     {% endif %}
@@ -44,7 +44,7 @@
           <div class="accordion__body {% if forloop.first %} active {% endif %}" id="{{ forloop.index }}" {% if forloop.first %} style="display: block;" {% endif %}>
             <div class="plan-radios">
               <label for="{{ forloop.index }}_radio-1" class="radio">
-                <input type="radio" name="purchase_type" value="autodeliver" id="{{ forloop.index }}_radio-1" data-frequency="{{ months_supply | times: 30 }}" data-variant="{{ variant.id }}">
+                <input type="radio" name="purchase_type" value="autodeliver" id="{{ forloop.index }}_radio-1" data-frequency="{{ months_supply }}" data-variant="{{ variant.id }}">
 
                 {% if discount_percentage > 0 %}
                   {% assign discount_price = variant.price | times: discount_percentage | divided_by: 100.0 %}
